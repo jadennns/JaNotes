@@ -1,3 +1,8 @@
+# Front End Ignores
 frontend/node_modules
 frontend/.env.local
 frontend/.next
+
+# Back End Ignores
+backend/node_modules
+backend/.env
