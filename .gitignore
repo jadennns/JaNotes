@@ -6,3 +6,7 @@ frontend/.next
 # Back End Ignores
 backend/node_modules
 backend/.env
+
+# Electron APP Ignores
+electron/node_modules
+electron/dist
