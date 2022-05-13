@@ -1,9 +1,11 @@
+import { NextSeo } from "next-seo";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function NotFound() {
   return (
     <>
+      <NextSeo title="Invalid Page" />
       <div className="flex items-center justify-center mt-32">
         <div className="flex flex-col items-center space-y-10">
           <div className="flex flex-col items-center space-y-2">
