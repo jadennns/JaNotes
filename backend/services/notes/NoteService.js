@@ -1,4 +1,5 @@
 const NoteModel = require("../../models/Note");
+const { ObjectID } = require("bson");
 
 module.exports = class NoteService {
   noteModel = NoteModel;
@@ -9,15 +10,19 @@ module.exports = class NoteService {
    * @param {id} id
    */
   async getNote(_id) {
-    const data = await this.noteModel.findOne({ _id }, { __v: 0 });
+    const data = await this.noteModel.findOne(
+      { _id: new ObjectID(_id) },
+      { __v: 0 }
+    );
     return data ? data : null;
   }
 
   /**
    *
    * @param {{
-   *   email: string,
-   *   content: string
+   *   email: string;
+   *   content: string;
+   *   name: string;
    * }} body
    */
   async createNote(body) {
@@ -25,6 +30,7 @@ module.exports = class NoteService {
       content: body.content,
       email: body.email,
       createdAt: new Date().toISOString(),
+      name: body.name,
     });
 
     return newNote;
@@ -46,5 +52,14 @@ module.exports = class NoteService {
     );
 
     return "OK";
+  }
+
+  async getUserNotes(email) {
+    const data = await this.noteModel.find(
+      { email: `${email}` },
+      { __v: 0, email: 0, content: 0, createdAt: 0 }
+    );
+
+    return data ? data : false;
   }
 };

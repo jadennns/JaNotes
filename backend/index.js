@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const { default: mongoose } = require("mongoose");
 const NoteRoute = require("./routes/NoteRoute");
 const chalk = require("chalk");
+const AuthRoute = require("./routes/AuthRoute");
 
 const PORT = process.env.PORT || 4000;
 
@@ -23,5 +24,12 @@ app.use(morgan("dev"));
  * LOAD ROUTES
  */
 new NoteRoute(app);
+new AuthRoute(app);
+
+/**
+ * ERROR HANDLING
+ */
+process.on("uncaughtException", (e) => console.log(chalk.red.bold(e.stack)));
+process.on("unhandledRejection", (e) => console.log(chalk.red.bold(e.stack)));
 
 server.listen(4000, () => console.log("Listening on PORT : " + PORT));

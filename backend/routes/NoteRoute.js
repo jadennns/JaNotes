@@ -39,13 +39,14 @@ module.exports = class NoteRoute {
       if (!isCorrectToken)
         return res.status(403).send({ message: "Forbidden." });
 
-      const { content } = req.body;
-      if (!content)
+      const { content, name } = req.body;
+      if (!content || !name)
         return res.status(400).send({ message: "Bad body request." });
 
       const newNote = await this.noteService.createNote({
         email: isCorrectToken.email,
         content,
+        name,
       });
       res.status(200).send({ message: "OK", data: newNote._id });
     });
@@ -70,6 +71,23 @@ module.exports = class NoteRoute {
       });
 
       res.status(200).send({ message: "Updated." });
+    });
+
+    /**
+     * GET USER NOTES
+     */
+    app.get("/me/notes", async (req, res) => {
+      const isCorrectToken = await this.authService.checkAuthToken(
+        req.headers.authorization
+      );
+      if (!isCorrectToken)
+        return res.status(403).send({ message: "Forbidden." });
+
+      const { email } = req.body;
+      if (!email) return res.status(400).send({ message: "Bad body request" });
+
+      const data = await this.noteService.getUserNotes("jadennns@yahoo.com");
+      res.status(200).send(data);
     });
   }
 };
